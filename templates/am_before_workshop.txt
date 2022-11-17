@@ -1,0 +1,9 @@
+Hi {{ firstname }}
+
+Glad you signed up for the workshop {{ workshop }} on {{ date|datetimeformat }} {{ time }}!
+{% if os == "MAC" %}
+Please check which processor is installed on your Mac.
+{% endif %}
+If you cancel the workshop before {{ date|change_days(-7)|datetimeformat }}, you will get a full refund.
+
+Kind regards, B.
