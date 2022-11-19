@@ -2,11 +2,11 @@
   "series": [
     {
       "id": "am_before_workshop",
-      "source_files": {},
+      "source_file": "blocks.json",
       "blocks": [
         "hello",
         "thanks",
-        "check",
+        "check_system",
         "conditions",
         "bye"
       ],
@@ -18,7 +18,7 @@
     },
     {
       "id": "fcs_before_workshop",
-      "source_files": {},
+      "source_file": "blocks.json",
       "blocks": [
         "hello",
         "thanks"
