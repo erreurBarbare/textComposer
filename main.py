@@ -38,7 +38,7 @@ def setup(env):
     env.filters['datetimeformat'] = datetimeformat
 
 
-def get_template_vars(env, series_params):
+def get_template_vars(env, series_params, ints, dates):
     template_source = env.loader.get_source(env, TEMPLATE)
     parsed_content = env.parse(template_source[0])
     template_vars = meta.find_undeclared_variables(parsed_content)
@@ -52,18 +52,49 @@ def get_template_vars(env, series_params):
         else:
             if print_info:
                 print("Please enter the desired values for the following variable(s) used in the text.")
+                print(f"For dates, use the format {DATE_FORMAT_HUMAN_READABLE}")
                 print("If you do not want to set the variable, just hit Enter")
                 print_info = False
             value = input(f"{v}: ")
-            template_vars_dict.update({v: value})
+            valid_value = check_data_type(v, value, ints, dates)
+            template_vars_dict.update({v: valid_value})
 
     return template_vars_dict
+
+
+def check_data_type(variable, value, ints, dates):
+    if value is None or value == '':
+        return None
+
+    valid = False
+    while not valid:
+        if variable in ints:
+            try:
+                return int(value)
+            except ValueError:
+                value = input(f"please enter a valid value for {variable} (Integer): ")
+        elif variable in dates:
+            try:
+                return datetime.datetime.strptime(value, DATE_FORMAT_MACHINE_READABLE)
+            except ValueError:
+                value = input(f"please enter a valid value for {variable} "
+                              f"(datetime having the format {DATE_FORMAT_HUMAN_READABLE}): ")
+        # TODO: add enums support
+        # treat all other variables as strings
+        else:
+            return value
 
 
 def get_series_attribute(series_id, series, attribute):
     jp_expr = ext.parse(f"$.series[?(@.id=={series_id})].{attribute}")
     attr = jp_expr.find(series)
     return attr[0].value
+
+
+def get_blocks_values_flat_list(blocks, attribute):
+    jsonpath_get_ints = parse(f"$.blocks[*].{attribute}")
+    lists = [match.value for match in jsonpath_get_ints.find(blocks)]
+    return [item for sublist in lists for item in sublist]
 
 
 def main():
@@ -77,13 +108,18 @@ def main():
     series_id = get_relevant_series_id(series)
     series_vars = get_series_attribute(series_id, series, "variables")
     #TODO: Support multiple blocks files
-    series_blocks_file = get_series_attribute(series_id, series, "source_file")
+    series_blocks_path = get_series_attribute(series_id, series, "source_file")
+
+    file_blocks = open(series_blocks_path)
+    blocks_json = json.load(file_blocks)
+
+    # TODO: Handle mandatory fields (add section optional_vars in blocks.json)
+
+    int_variables = get_blocks_values_flat_list(blocks_json, "integer_vars")
+    date_variables = get_blocks_values_flat_list(blocks_json, "date_vars")
 
     template = env.get_template(TEMPLATE)
-    template_vars = get_template_vars(env, series_vars)
-    # TODO Parse int and dates (and enums?) correctly
-    workshop_date = datetime.datetime(2022, 12, 3)
-    template_vars.update({"date": workshop_date})
+    template_vars = get_template_vars(env, series_vars, int_variables, date_variables)
 
     content = template.render(template_vars)
 

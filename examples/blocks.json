@@ -1,0 +1,34 @@
+{
+  "blocks": [
+    {
+      "id": "hello",
+      "value": "Hi {{ firstname }}"
+    },
+    {
+      "id": "thanks",
+      "value": "Glad you signed up for the workshop {{ workshop }} on {{ date }} at {{ time }}!",
+      "date_vars": [
+        "date"
+      ]
+    },
+    {
+      "id": "check_system",
+      "value": "{% if os == \"MAC\" %}\nPlease check which processor is installed on your Mac.\n{% endif %}"
+    },
+    {
+      "id": "conditions",
+      "value": "If you cancel the workshop before {{ date|change_days(-7)|datetimeformat }}, you will get a full refund."
+    },
+    {
+      "id": "price",
+      "value": "Price: {{ price }}",
+      "integer_vars": [
+        "price"
+      ]
+    },
+    {
+      "id": "bye",
+      "value": "Kind regards, B."
+    }
+  ]
+}
