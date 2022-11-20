@@ -14,8 +14,7 @@
         "workshop": "aare_meter",
         "price": 160,
         "time": "from 9.30am to 4.30pm"
-      },
-      "conditions": "TODO: if MAC, get processor information"
+      }
     },
     {
       "id": "fcs_before_workshop",
@@ -26,7 +25,8 @@
       ],
       "variables": {
         "workshop": "Fyraabe Coding Session",
-        "time": "from 6.30pm to 7.30pm"
+        "time": "from 6.30pm to 7.30pm",
+        "price": 0
       }
     }
   ]

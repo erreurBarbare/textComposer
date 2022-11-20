@@ -18,7 +18,6 @@ def get_relevant_series_id(series_json):
     for i in ids:
         print("-", i)
     print()
-    # TODO: User can select desired series via number or name (bash dialog)
     input_message = "-> Please enter desired series name: "
     while True:
         user_input = input(input_message)
@@ -69,7 +68,6 @@ def check_data_type(variable, value, ints, dates):
             except ValueError:
                 value = input(f"please enter a valid value for {variable} "
                               f"(datetime having the format {configs.get('DATE_FORMAT_HUMAN_READABLE').data}): ")
-        # TODO: add enums support
         # treat all other variables as strings
         else:
             return value
@@ -97,13 +95,10 @@ def main():
 
     series_id = get_relevant_series_id(series)
     series_vars = get_series_attribute(series_id, series, "variables")
-    # TODO: Support multiple blocks files
     series_blocks_path = get_series_attribute(series_id, series, "source_file")
 
     file_blocks = open(series_blocks_path)
     blocks_json = json.load(file_blocks)
-
-    # TODO: Handle mandatory fields (add section optional_vars in blocks.json)
 
     int_variables = get_blocks_values_flat_list(blocks_json, "integer_vars")
     date_variables = get_blocks_values_flat_list(blocks_json, "date_vars")
