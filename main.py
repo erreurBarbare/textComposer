@@ -19,8 +19,13 @@ def get_relevant_series_id(series_json):
         print("-", i)
     print()
     # TODO: User can select desired series via number or name (bash dialog)
-    # TODO: Add error handling
-    return input("-> Please enter desired series name: ")
+    input_message = "-> Please enter desired series name: "
+    while True:
+        user_input = input(input_message)
+        if user_input in ids:
+            return user_input
+        else:
+            input_message = "Invalid input. Please enter a existing series name: "
 
 
 def get_template_vars(env, series_params, ints, dates):
@@ -38,7 +43,7 @@ def get_template_vars(env, series_params, ints, dates):
             if print_info:
                 print("Please enter the desired values for the following variable(s) used in the text.")
                 print(f"For dates, use the format {configs.get('DATE_FORMAT_HUMAN_READABLE').data}")
-                print("If you do not want to set the variable, just hit Enter")
+                print("If you do NOT want to set the variable, just hit Enter")
                 print_info = False
             value = input(f"{v}: ")
             valid_value = check_data_type(v, value, ints, dates)
