@@ -7,12 +7,7 @@ from jsonpath_ng import parse, ext
 import jinja_utils
 import properties
 
-def change_days(date, num_days):
-    return date + datetime.timedelta(days=num_days)
-
-
-def datetimeformat(value, date_format=DATE_FORMAT_MACHINE_READABLE):
-    return value.strftime(date_format)
+configs = properties.get_properties()
 
 
 def get_relevant_series_id(series_json):
@@ -26,11 +21,6 @@ def get_relevant_series_id(series_json):
     # TODO: User can select desired series via number or name (bash dialog)
     # TODO: Add error handling
     return input("-> Please enter desired series name: ")
-
-
-def setup(env):
-    env.filters['change_days'] = change_days
-    env.filters['datetimeformat'] = datetimeformat
 
 
 def get_template_vars(env, series_params, ints, dates):
@@ -95,14 +85,14 @@ def get_blocks_values_flat_list(blocks, attribute):
 def main():
     env = Environment(loader=PackageLoader("main"),
                       autoescape=select_autoescape())
-    setup(env)
+    jinja_utils.setup(env)
 
     file_series = open(configs.get("PATH_SERIES").data)
     series = json.load(file_series)
 
     series_id = get_relevant_series_id(series)
     series_vars = get_series_attribute(series_id, series, "variables")
-    #TODO: Support multiple blocks files
+    # TODO: Support multiple blocks files
     series_blocks_path = get_series_attribute(series_id, series, "source_file")
 
     file_blocks = open(series_blocks_path)
