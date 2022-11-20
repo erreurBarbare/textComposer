@@ -4,13 +4,8 @@ import json
 from jinja2 import Environment, PackageLoader, select_autoescape, meta
 from jsonpath_ng import parse, ext
 
-# TODO: Create config file
-TEMPLATE = "test-template.txt.j2"
-FILENAME_OUTPUT = "test_output.txt"
-PATH_SERIES = "examples/series.json"
-DATE_FORMAT_HUMAN_READABLE = "DD.MM.YYYY"
-DATE_FORMAT_MACHINE_READABLE = "%d.%m.%Y"
-
+import jinja_utils
+import properties
 
 def change_days(date, num_days):
     return date + datetime.timedelta(days=num_days)
@@ -39,7 +34,7 @@ def setup(env):
 
 
 def get_template_vars(env, series_params, ints, dates):
-    template_source = env.loader.get_source(env, TEMPLATE)
+    template_source = env.loader.get_source(env, configs.get("TEMPLATE").data)
     parsed_content = env.parse(template_source[0])
     template_vars = meta.find_undeclared_variables(parsed_content)
 
@@ -52,7 +47,7 @@ def get_template_vars(env, series_params, ints, dates):
         else:
             if print_info:
                 print("Please enter the desired values for the following variable(s) used in the text.")
-                print(f"For dates, use the format {DATE_FORMAT_HUMAN_READABLE}")
+                print(f"For dates, use the format {configs.get('DATE_FORMAT_HUMAN_READABLE').data}")
                 print("If you do not want to set the variable, just hit Enter")
                 print_info = False
             value = input(f"{v}: ")
@@ -75,10 +70,10 @@ def check_data_type(variable, value, ints, dates):
                 value = input(f"please enter a valid value for {variable} (Integer): ")
         elif variable in dates:
             try:
-                return datetime.datetime.strptime(value, DATE_FORMAT_MACHINE_READABLE)
+                return datetime.datetime.strptime(value, configs.get("DATE_FORMAT_MACHINE_READABLE").data)
             except ValueError:
                 value = input(f"please enter a valid value for {variable} "
-                              f"(datetime having the format {DATE_FORMAT_HUMAN_READABLE}): ")
+                              f"(datetime having the format {configs.get('DATE_FORMAT_HUMAN_READABLE').data}): ")
         # TODO: add enums support
         # treat all other variables as strings
         else:
@@ -102,7 +97,7 @@ def main():
                       autoescape=select_autoescape())
     setup(env)
 
-    file_series = open(PATH_SERIES)
+    file_series = open(configs.get("PATH_SERIES").data)
     series = json.load(file_series)
 
     series_id = get_relevant_series_id(series)
@@ -118,12 +113,12 @@ def main():
     int_variables = get_blocks_values_flat_list(blocks_json, "integer_vars")
     date_variables = get_blocks_values_flat_list(blocks_json, "date_vars")
 
-    template = env.get_template(TEMPLATE)
+    template = env.get_template(configs.get("TEMPLATE").data)
     template_vars = get_template_vars(env, series_vars, int_variables, date_variables)
 
     content = template.render(template_vars)
 
-    with open(FILENAME_OUTPUT, mode="w", encoding="utf-8") as message:
+    with open(configs.get("FILENAME_OUTPUT").data, mode="w", encoding="utf-8") as message:
         message.write(content)
 
 
