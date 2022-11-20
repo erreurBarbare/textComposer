@@ -1,0 +1,33 @@
+{
+  "series": [
+    {
+      "id": "am_before_workshop",
+      "source_file": "examples/blocks.json",
+      "blocks": [
+        "hello",
+        "thanks",
+        "check_system",
+        "conditions",
+        "bye"
+      ],
+      "variables": {
+        "workshop": "aare_meter",
+        "price": 160,
+        "time": "from 9.30am to 4.30pm"
+      }
+    },
+    {
+      "id": "fcs_before_workshop",
+      "source_file": "examples/blocks.json",
+      "blocks": [
+        "hello",
+        "thanks"
+      ],
+      "variables": {
+        "workshop": "Fyraabe Coding Session",
+        "time": "from 6.30pm to 7.30pm",
+        "price": 0
+      }
+    }
+  ]
+}
