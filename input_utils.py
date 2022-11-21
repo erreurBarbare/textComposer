@@ -1,6 +1,8 @@
-from jsonpath_ng import parse
-import jinja_utils
 import datetime
+
+from jsonpath_ng import parse
+
+import jinja_utils
 import properties
 
 configs = properties.get_properties()
@@ -23,7 +25,7 @@ def get_relevant_series_id(series_json):
             input_message = "Invalid input. Please enter a existing series name: "
 
 
-def get_template_vars(env, series_params, ints, dates):
+def get_template_vars(env, series_params, ints, dates, enums):
     template_vars = jinja_utils.get_undeclared_vars(env)
     template_vars_dict = {}
 
@@ -38,18 +40,21 @@ def get_template_vars(env, series_params, ints, dates):
                 print("If you do NOT want to set the variable, just hit Enter")
                 print_info = False
             value = input(f"{v}: ")
-            valid_value = check_data_type(v, value, ints, dates)
+            valid_value = check_data_type(v, value, ints, dates, enums)
             template_vars_dict.update({v: valid_value})
 
     return template_vars_dict
 
 
-def check_data_type(variable, value, ints, dates):
+def check_data_type(variable, value, ints, dates, enums):
     if value is None or value == '':
         return None
 
-    valid = False
-    while not valid:
+    enum_names = []
+    for e in enums:
+        enum_names.append(e["name"])
+
+    while True:
         if variable in ints:
             try:
                 return int(value)
@@ -61,6 +66,16 @@ def check_data_type(variable, value, ints, dates):
             except ValueError:
                 value = input(f"please enter a valid value for {variable} "
                               f"(datetime having the format {configs.get('DATE_FORMAT_HUMAN_READABLE').data}): ")
+        elif variable in enum_names:
+            relevant_entry = None
+            for entry in enums:
+                if entry["name"] == variable:
+                    relevant_entry = entry
+            if value in relevant_entry["values"]:
+                return value
+            else:
+                value = input(f"please enter a valid value for {variable} "
+                              f"(allowed values: {relevant_entry['values']}): ")
         # treat all other variables as strings
         else:
             return value

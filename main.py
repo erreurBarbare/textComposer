@@ -40,9 +40,10 @@ def main():
 
     int_variables = utils.flatten(get_blocks_values(blocks_json, "integer_vars"))
     date_variables = utils.flatten(get_blocks_values(blocks_json, "date_vars"))
+    enum_variables = utils.flatten(get_blocks_values(blocks_json, "enum_vars"))
 
     template = env.get_template(configs.get("TEMPLATE").data)
-    template_vars = input_utils.get_template_vars(env, series_vars, int_variables, date_variables)
+    template_vars = input_utils.get_template_vars(env, series_vars, int_variables, date_variables, enum_variables)
 
     content = template.render(template_vars)
 

@@ -13,7 +13,13 @@
     },
     {
       "id": "check_system",
-      "value": "{% if os == \"MAC\" %}\nPlease check which processor is installed on your Mac.\n{% endif %}"
+      "value": "{% if os == \"MAC\" %}\nPlease check which processor is installed on your Mac.\n{% endif %}",
+      "enum_vars": [
+        {
+          "name": "os",
+          "values": ["MAC", "WIN", "Linux"]
+        }
+      ]
     },
     {
       "id": "conditions",
