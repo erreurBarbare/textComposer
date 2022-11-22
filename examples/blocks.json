@@ -6,7 +6,7 @@
     },
     {
       "id": "thanks",
-      "value": "Glad you signed up for the workshop {{ workshop }} on {{ date }} at {{ time }}!",
+      "value": "Glad you signed up for the workshop {{ workshop }} on {{ date|datetimeformat }} at {{ time }}!",
       "date_vars": [
         "date"
       ]

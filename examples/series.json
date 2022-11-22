@@ -21,7 +21,8 @@
       "source_file": "examples/blocks.json",
       "blocks": [
         "hello",
-        "thanks"
+        "thanks",
+        "bye"
       ],
       "variables": {
         "workshop": "Fyraabe Coding Session",
