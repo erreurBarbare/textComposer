@@ -4,6 +4,6 @@ configs = Properties()
 
 
 def get_properties():
-    with open('text_composer.conf', 'rb') as config_file:
+    with open('samples/text_composer.conf', 'rb') as config_file:
         configs.load(config_file)
     return configs

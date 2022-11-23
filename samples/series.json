@@ -2,11 +2,12 @@
   "series": [
     {
       "id": "am_before_workshop",
-      "source_file": "examples/blocks.json",
+      "source_file": "samples/blocks.json",
       "blocks": [
         "hello",
         "thanks",
         "check_system",
+        "price",
         "conditions",
         "bye"
       ],
@@ -18,7 +19,7 @@
     },
     {
       "id": "fcs_before_workshop",
-      "source_file": "examples/blocks.json",
+      "source_file": "samples/blocks.json",
       "blocks": [
         "hello",
         "thanks",

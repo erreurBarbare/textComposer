@@ -1,10 +1,7 @@
 Hi {{ firstname }}
-
-Glad you signed up for the workshop {{ workshop }} on {{ date|datetimeformat }} {{ time }}!
+Glad you signed up for the workshop {{ workshop }} on {{ date|datetimeformat }} at {{ time }}!
 {% if os == "MAC" %}
 Please check which processor is installed on your Mac.
 {% endif %}
 If you cancel the workshop before {{ date|change_days(-7)|datetimeformat }}, you will get a full refund.
-Price: {{ price }}
-
 Kind regards, B.

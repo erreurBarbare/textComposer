@@ -28,7 +28,7 @@ def get_attribute_of_all_objects(object_name, json_object, attribute):
 def generate_template(relevant_blocks, blocks_json, template_path):
     with open(template_path, mode="w", encoding="utf-8") as new_template:
         for b in relevant_blocks:
-            new_template.write(get_attribute_of_single_object(BLOCKS, b, blocks_json, "value") + "\n")
+            new_template.write(get_attribute_of_single_object(BLOCKS, b, blocks_json, "value") + "\n\n")
 
 
 def main():
