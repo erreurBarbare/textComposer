@@ -58,7 +58,7 @@ def main():
 
     content = template.render(template_vars)
 
-    with open(configs.get("FILENAME_OUTPUT").data, mode="w", encoding="utf-8") as message:
+    with open(configs.get("FOLDER_OUTPUT").data + configs.get("FILENAME_OUTPUT").data, mode="w", encoding="utf-8") as message:
         message.write(content)
 
 
