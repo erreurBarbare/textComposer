@@ -3,9 +3,9 @@ import datetime
 from jsonpath_ng import parse
 
 import jinja_utils
-import properties
+import composer_utils as cu
 
-configs = properties.get_properties()
+configs = cu.get_config()
 
 
 def get_relevant_series_id(series_json):
@@ -36,7 +36,7 @@ def get_template_vars(env, series_params, ints, dates, enums):
         else:
             if print_info:
                 print("Please enter the desired values for the following variable(s) used in the text.")
-                print(f"For dates, use the format {configs.get('DATE_FORMAT_HUMAN_READABLE').data}")
+                print(f"For dates, use the format {configs['Date']['DateFormatHumanReadable']}")
                 print("If you do NOT want to set the variable, just hit Enter")
                 print_info = False
             value = input(f"{v}: ")
@@ -62,10 +62,10 @@ def check_data_type(variable, value, ints, dates, enums):
                 value = input(f"please enter a valid value for {variable} (Integer): ")
         elif variable in dates:
             try:
-                return datetime.datetime.strptime(value, configs.get("DATE_FORMAT_MACHINE_READABLE").data)
+                return datetime.datetime.strptime(value, configs['Date']['DateFormatMachineReadable'])
             except ValueError:
                 value = input(f"please enter a valid value for {variable} "
-                              f"(datetime having the format {configs.get('DATE_FORMAT_HUMAN_READABLE').data}): ")
+                              f"(datetime having the format {configs['Date']['DateFormatHumanReadable']}): ")
         elif variable in enum_names:
             relevant_entry = None
             for entry in enums:

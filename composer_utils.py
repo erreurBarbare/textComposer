@@ -1,7 +1,11 @@
 from jsonpath_ng import parse, ext
 import json
+import configparser
 
 BLOCKS = "blocks"
+SAMPLE_CONFIG_PATH = "samples/composer.ini"
+config_path = ""
+config_info_printed = False
 
 
 def flatten(list_of_lists):
@@ -30,3 +34,20 @@ def load_json_from_file(path):
     loaded_json = json.load(loaded_file)
     loaded_file.close()
     return loaded_json
+
+
+def get_config(path=None):
+    global config_path
+    parser = configparser.ConfigParser()
+    if path is not None and config_path != "":
+        config_path = path
+    if config_path != "":
+        parser.read(path)
+        return parser
+    else:
+        global config_info_printed
+        if not config_info_printed:
+            print("No custom config provided. Using sample config.")
+            config_info_printed = True
+        parser.read(SAMPLE_CONFIG_PATH)
+        return parser

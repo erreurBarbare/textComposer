@@ -1,6 +1,7 @@
 /shelf/
 /workspace.xml
-output/*
-.idea/*
+output/
+.idea/
 __pycache__/
-/templates
+templates/
+local_setup/
