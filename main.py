@@ -11,13 +11,7 @@ BLOCKS = "blocks"
 
 
 def main():
-    # setup
-    parser = argparse.ArgumentParser(description='Generate text from blocks')
-    parser.add_argument("-config", help="path to config file")
-    args = parser.parse_args()
-
-    config_path = args.config
-    configs = cu.get_config(args.config)
+    configs = cu.get_config()
 
     env = Environment(loader=PackageLoader("main"),
                       autoescape=select_autoescape())
