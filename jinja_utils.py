@@ -1,16 +1,15 @@
-import properties
 import datetime
-
+import composer_utils as cu
 from jinja2 import meta
 
-configs = properties.get_properties()
+configs = cu.get_config()
 
 
 def change_days(date, num_days):
     return date + datetime.timedelta(days=num_days)
 
 
-def datetimeformat(value, date_format=configs.get("DATE_FORMAT_MACHINE_READABLE").data):
+def datetimeformat(value, date_format=configs['Date']['DateFormatMachineReadable']):
     return value.strftime(date_format)
 
 
@@ -20,6 +19,6 @@ def setup(env):
 
 
 def get_undeclared_vars(env):
-    template_source = env.loader.get_source(env, configs.get("TEMPLATE").data)
+    template_source = env.loader.get_source(env, configs['Files']['Template'])
     parsed_content = env.parse(template_source[0])
     return meta.find_undeclared_variables(parsed_content)

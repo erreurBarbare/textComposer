@@ -6,14 +6,14 @@
     },
     {
       "id": "thanks",
-      "value": "Glad you signed up for the workshop {{ workshop }} on {{ date }} at {{ time }}!",
+      "value": "Glad you signed up for the workshop {{ workshop }} on {{ date|datetimeformat }} at {{ time }}!",
       "date_vars": [
         "date"
       ]
     },
     {
       "id": "check_system",
-      "value": "{% if os == \"MAC\" %}\nPlease check which processor is installed on your Mac.\n{% endif %}",
+      "value": "{% if os == \"MAC\" %}Please check which processor is installed on your Mac.\n\n{% endif -%}",
       "enum_vars": [
         {
           "name": "os",
