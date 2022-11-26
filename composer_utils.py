@@ -16,8 +16,8 @@ def get_attribute_of_single_object(object_name, object_id, json_object, attribut
 
 
 def get_attribute_of_all_objects(object_name, json_object, attribute):
-    jsonpath_get_ints = parse(f"$..{object_name}[*].{attribute}")
-    return [match.value for match in jsonpath_get_ints.find(json_object)]
+    jsonpath_get_attr_of_all_objs = parse(f"$..{object_name}[*].{attribute}")
+    return [match.value for match in jsonpath_get_attr_of_all_objs.find(json_object)]
 
 
 def generate_template(relevant_blocks, blocks_json, template_path):

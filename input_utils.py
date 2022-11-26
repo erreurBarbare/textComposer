@@ -25,7 +25,7 @@ def get_relevant_series_id(series_json):
             input_message = "Invalid input. Please enter a existing series name: "
 
 
-def get_template_vars(env, series_params, ints, dates, enums):
+def get_template_vars(env, series_params, ints, dates, enums, optionals):
     template_vars = jinja_utils.get_undeclared_vars(env)
     template_vars_dict = {}
 
@@ -40,21 +40,23 @@ def get_template_vars(env, series_params, ints, dates, enums):
                 print("If you do NOT want to set the variable, just hit Enter")
                 print_info = False
             value = input(f"{v}: ")
-            valid_value = check_data_type(v, value, ints, dates, enums)
+            valid_value = check_data_type(v, value, ints, dates, enums, optionals)
             template_vars_dict.update({v: valid_value})
 
     return template_vars_dict
 
 
-def check_data_type(variable, value, ints, dates, enums):
-    if value is None or value == '':
-        return None
-
+def check_data_type(variable, value, ints, dates, enums, optionals):
     enum_names = []
     for e in enums:
         enum_names.append(e["name"])
 
     while True:
+        if value is None or value == '':
+            if variable in optionals:
+                return None
+            else:
+                value = input(f"{variable} can not be empty. Please enter a value for {variable}: ")
         if variable in ints:
             try:
                 return int(value)

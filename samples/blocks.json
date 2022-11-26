@@ -17,8 +17,15 @@
       "enum_vars": [
         {
           "name": "os",
-          "values": ["MAC", "WIN", "Linux"]
+          "values": [
+            "MAC",
+            "WIN",
+            "Linux"
+          ]
         }
+      ],
+      "optional_vars": [
+        "os"
       ]
     },
     {
