@@ -12,7 +12,12 @@ def flatten(list_of_lists):
 def get_attribute_of_single_object(object_name, object_id, json_object, attribute):
     jp_expr = ext.parse(f"$..{object_name}[?(@.id=={object_id})].{attribute}")
     attr = jp_expr.find(json_object)
-    return attr[0].value
+    try:
+        return attr[0].value
+    except IndexError:
+        print(f"ERROR: could find no attribute '{attribute}' in object '{object_name}' for id '{object_id}' \n"
+              f"json: {json_object}")
+        exit(-1)
 
 
 def get_attribute_of_all_objects(object_name, json_object, attribute):
