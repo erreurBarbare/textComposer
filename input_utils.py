@@ -25,28 +25,31 @@ def get_relevant_series_id(series_json):
             input_message = "Invalid input. Please enter a existing series name: "
 
 
-def get_template_vars(env, series_params, ints, dates, enums, optionals):
+def get_template_vars(env, series_params, ints, dates, times, enums, optionals):
     template_vars = jinja_utils.get_undeclared_vars(env)
     template_vars_dict = {}
 
     print_info = True
     for v in template_vars:
-        if series_params.get(v) is not None:
-            template_vars_dict.update({v: series_params.get(v)})
+        series_var = series_params.get(v)
+        if series_var is not None:
+            cu.check_datatype(v, series_var, ints, dates, times, enums)
+            template_vars_dict.update({v: series_var})
         else:
             if print_info:
                 print("Please enter the desired values for the following variable(s) used in the text.")
                 print(f"For dates, use the format {configs['Date']['DateFormatHumanReadable']}")
+                print(f"For time, use the format {configs['Time']['TimeFormatHumanReadable']}")
                 print("If you do NOT want to set the variable, just hit Enter")
                 print_info = False
             value = input(f"{v}: ")
-            valid_value = check_data_type(v, value, ints, dates, enums, optionals)
+            valid_value = check_data_type(v, value, ints, dates, times, enums, optionals)
             template_vars_dict.update({v: valid_value})
 
     return template_vars_dict
 
 
-def check_data_type(variable, value, ints, dates, enums, optionals):
+def check_data_type(variable, value, ints, dates, times, enums, optionals):
     enum_names = []
     for e in enums:
         enum_names.append(e["name"])
@@ -67,7 +70,13 @@ def check_data_type(variable, value, ints, dates, enums, optionals):
                 return datetime.datetime.strptime(value, configs['Date']['DateFormatMachineReadable'])
             except ValueError:
                 value = input(f"please enter a valid value for {variable} "
-                              f"(datetime having the format {configs['Date']['DateFormatHumanReadable']}): ")
+                              f"(date having the format {configs['Date']['DateFormatHumanReadable']}): ")
+        elif variable in times:
+            try:
+                return datetime.datetime.strptime(value, configs['Time']['TimeFormatMachineReadable'])
+            except ValueError:
+                value = input(f"please enter a valid value for {variable} "
+                              f"(time having the format {configs['Time']['TimeFormatHumanReadable']}): ")
         elif variable in enum_names:
             relevant_entry = None
             for entry in enums:

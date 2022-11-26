@@ -9,12 +9,13 @@
         "check_system",
         "price",
         "conditions",
+        "doors_closed",
         "bye"
       ],
       "variables": {
         "workshop": "aare_meter",
         "price": 160,
-        "time": "from 9.30am to 4.30pm"
+        "end_time": "16:30"
       }
     },
     {
@@ -27,7 +28,8 @@
       ],
       "variables": {
         "workshop": "Fyraabe Coding Session",
-        "time": "from 6.30pm to 7.30pm",
+        "start_time": "18.30",
+        "end_time": "19:30",
         "price": 0
       }
     }
