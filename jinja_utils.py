@@ -14,7 +14,7 @@ def format_date(value, date_format=configs['Date']['DateFormatMachineReadable'])
 
 
 def change_time(time, num_hours, num_min):
-    return time + datetime.timedelta(hours=num_hours, minutes=num_min)
+    return cu.check_time(time, configs) + datetime.timedelta(hours=num_hours, minutes=num_min)
 
 
 def format_time(value, time_format=configs['Time']['TimeFormatMachineReadable']):
