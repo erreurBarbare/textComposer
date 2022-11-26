@@ -1,6 +1,7 @@
 from jsonpath_ng import parse, ext
 import json
 import configparser
+import datetime
 
 BLOCKS = "blocks"
 
@@ -17,7 +18,7 @@ def get_attribute_of_single_object(object_name, object_id, json_object, attribut
     except IndexError:
         print(f"ERROR: could find no attribute '{attribute}' in object '{object_name}' for id '{object_id}' \n"
               f"json: {json_object}")
-        exit(-1)
+        exit(200)
 
 
 def get_attribute_of_all_objects(object_name, json_object, attribute):
@@ -42,3 +43,51 @@ def get_config():
     parser = configparser.ConfigParser()
     parser.read("composer.ini")
     return parser
+
+
+def check_datatype(variable, value, ints, dates, times, enums):
+    configs = get_config()
+    enum_names = []
+    for e in enums:
+        enum_names.append(e["name"])
+
+    if variable in ints:
+        try:
+            return int(value)
+        except ValueError:
+            print(f"ERROR: '{value}' is not a valid integer")
+            exit(100)
+    elif variable in dates:
+        try:
+            return datetime.datetime.strptime(value, configs['Date']['DateFormatMachineReadable'])
+        except ValueError:
+            print(f"ERROR: '{value}' is not a valid time (supported format: "
+                  f"{configs['Date']['DateFormatHumanReadable']}")
+            exit(100)
+    elif variable in times:
+        check_time(value, configs)
+    elif variable in enum_names:
+        relevant_entry = None
+        for entry in enums:
+            if entry["name"] == variable:
+                relevant_entry = entry
+        if value in relevant_entry["values"]:
+            return value
+        else:
+            print(f"ERROR: '{value}' is not a valid value"
+                  f"(allowed values: {relevant_entry['values']})")
+            exit(100)
+    # treat all other variables as strings
+    else:
+        return value
+
+
+def check_time(value, configs):
+    if type(value) == datetime.datetime:
+        return value
+    try:
+        return datetime.datetime.strptime(value, configs['Time']['TimeFormatMachineReadable'])
+    except ValueError:
+        print(f"ERROR: '{value}' is not a valid time (supported format: "
+              f"{configs['Time']['TimeFormatHumanReadable']}")
+        exit(100)

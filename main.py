@@ -35,10 +35,11 @@ def main():
     # define the variables values for the final text
     int_vars = cu.flatten(cu.get_attribute_of_all_objects(BLOCKS, blocks_json, "integer_vars"))
     date_vars = cu.flatten(cu.get_attribute_of_all_objects(BLOCKS, blocks_json, "date_vars"))
+    time_vars = cu.flatten(cu.get_attribute_of_all_objects(BLOCKS, blocks_json, "time_vars"))
     enum_vars = cu.flatten(cu.get_attribute_of_all_objects(BLOCKS, blocks_json, "enum_vars"))
     optional_vars = cu.flatten(cu.get_attribute_of_all_objects(BLOCKS, blocks_json, "optional_vars"))
-    text_variables_values = input_utils.get_template_vars(env, series_vars, int_vars, date_vars, enum_vars,
-                                                          optional_vars)
+    text_variables_values = input_utils.get_template_vars(env, series_vars, int_vars, date_vars, time_vars,
+                                                          enum_vars, optional_vars)
 
     # generate final text
     content = template.render(text_variables_values)

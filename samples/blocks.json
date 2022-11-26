@@ -6,9 +6,13 @@
     },
     {
       "id": "thanks",
-      "value": "Glad you signed up for the workshop {{ workshop }} on {{ date|datetimeformat }} at {{ time }}!",
+      "value": "Glad you signed up for the workshop {{ workshop }} on {{ date|format_date }} from {{ start_time|format_time }} to {{ end_time|format_time }}!",
       "date_vars": [
         "date"
+      ],
+      "time_vars": [
+        "start_time",
+        "end_time"
       ]
     },
     {
@@ -30,7 +34,7 @@
     },
     {
       "id": "conditions",
-      "value": "If you cancel the workshop before {{ date|change_days(-7)|datetimeformat }}, you will get a full refund."
+      "value": "If you cancel the workshop before {{ date|change_days(-7)|format_date }}, you will get a full refund."
     },
     {
       "id": "price",
@@ -38,6 +42,9 @@
       "integer_vars": [
         "price"
       ]
+    }, {
+      "id": "doors_closed",
+      "value": "Since the front door is locked, I'll pick you up at {{ start_time|change_time(0,-10)|format_time }}"
     },
     {
       "id": "bye",
