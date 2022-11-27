@@ -78,15 +78,12 @@ def check_data_type(variable, value, ints, dates, times, enums, optionals):
                 value = input(f"please enter a valid value for {variable} "
                               f"(time having the format {configs['Time']['TimeFormatHumanReadable']}): ")
         elif variable in enum_names:
-            relevant_entry = None
-            for entry in enums:
-                if entry["name"] == variable:
-                    relevant_entry = entry
-            if value in relevant_entry["values"]:
+            relevant_enum = cu.get_relevant_enum(variable, value, enums)
+            if value in relevant_enum["values"]:
                 return value
             else:
                 value = input(f"please enter a valid value for {variable} "
-                              f"(allowed values: {relevant_entry['values']}): ")
+                              f"(allowed values: {relevant_enum['values']}): ")
         # treat all other variables as strings
         else:
             return value

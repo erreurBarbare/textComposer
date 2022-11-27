@@ -67,15 +67,12 @@ def check_datatype(variable, value, ints, dates, times, enums):
     elif variable in times:
         check_time(value, configs)
     elif variable in enum_names:
-        relevant_entry = None
-        for entry in enums:
-            if entry["name"] == variable:
-                relevant_entry = entry
-        if value in relevant_entry["values"]:
+        relevant_enum = get_relevant_enum(variable, value, enums)
+        if value in relevant_enum["values"]:
             return value
         else:
             print(f"ERROR: '{value}' is not a valid value"
-                  f"(allowed values: {relevant_entry['values']})")
+                  f"(allowed values: {relevant_enum['values']})")
             exit(100)
     # treat all other variables as strings
     else:
@@ -91,3 +88,11 @@ def check_time(value, configs):
         print(f"ERROR: '{value}' is not a valid time (supported format: "
               f"{configs['Time']['TimeFormatHumanReadable']}")
         exit(100)
+
+
+def get_relevant_enum(variable, value, enums):
+    for enum in enums:
+        if enum["name"] == variable:
+            return enum
+    return None
+
