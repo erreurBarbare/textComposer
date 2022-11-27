@@ -4,6 +4,8 @@ import composer_utils as cu
 import input_utils
 import jinja_utils
 
+import pyperclip
+
 SERIES = "series"
 BLOCKS = "blocks"
 
@@ -47,6 +49,8 @@ def main():
     with open(configs['Files']['FolderOutput'] + configs['Files']['FilenameOutput'], mode='w',
               encoding='utf-8') as message:
         message.write(content)
+
+    pyperclip.copy(content)
 
 
 if __name__ == '__main__':
