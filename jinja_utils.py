@@ -1,6 +1,9 @@
 import datetime
-import composer_utils as cu
+
 from jinja2 import meta
+
+import composer_utils as cu
+import input_utils
 
 configs = cu.get_config()
 
@@ -21,11 +24,16 @@ def format_time(value, time_format=configs['Time']['TimeFormatMachineReadable'])
     return cu.check_time(value, configs).strftime(time_format)
 
 
+def discount(price):
+    return input_utils.calculate_discount(price)
+
+
 def setup(env):
     env.filters['format_date'] = format_date
     env.filters['change_days'] = change_days
     env.filters['format_time'] = format_time
     env.filters['change_time'] = change_time
+    env.filters['discount'] = discount
 
 
 def get_undeclared_vars(env):

@@ -2,8 +2,8 @@ import datetime
 
 from jsonpath_ng import parse
 
-import jinja_utils
 import composer_utils as cu
+import jinja_utils
 
 configs = cu.get_config()
 
@@ -87,3 +87,25 @@ def check_data_type(variable, value, ints, dates, times, enums, optionals):
         # treat all other variables as strings
         else:
             return value
+
+
+def calculate_discount(price):
+    if price == 0:
+        return price
+    discount = input("For normal price, hit enter. For a discount, enter absolute value (20) or a percentage (10%): ")
+    while True:
+        try:
+            if discount is None or discount == '' or int(discount) < 0:
+                return price
+            if 0 < int(discount) < price:
+                return price - int(discount)
+        except ValueError:
+            if discount[-1:] == '%':
+                try:
+                    percentage = int(discount[0:-1])
+                    if 0 < percentage <= 100:
+                        return int(price * (100 - percentage)/100)
+                except ValueError:
+                    pass
+        discount = input("please enter a valid value for discount: ")
+
