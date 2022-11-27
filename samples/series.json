@@ -15,6 +15,7 @@
       "variables": {
         "workshop": "aare_meter",
         "price": 160,
+        "start_time": "09:30",
         "end_time": "16:30"
       }
     },

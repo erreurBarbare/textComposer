@@ -38,7 +38,7 @@
     },
     {
       "id": "price",
-      "value": "Price: {{ price }}",
+      "value": "Price: {{ price|discount }}",
       "integer_vars": [
         "price"
       ]
