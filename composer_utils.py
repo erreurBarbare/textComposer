@@ -18,7 +18,7 @@ def get_attribute_of_single_object(object_name, object_id, json_object, attribut
     except IndexError:
         print(f"ERROR: could find no attribute '{attribute}' in object '{object_name}' for id '{object_id}' \n"
               f"json: {json_object}")
-        exit(200)
+        exit(1)
 
 
 def get_attribute_of_all_objects(object_name, json_object, attribute):
@@ -56,14 +56,14 @@ def check_datatype(variable, value, ints, dates, times, enums):
             return int(value)
         except ValueError:
             print(f"ERROR: '{value}' is not a valid integer")
-            exit(100)
+            exit(1)
     elif variable in dates:
         try:
             return datetime.datetime.strptime(value, configs['Date']['DateFormatMachineReadable'])
         except ValueError:
             print(f"ERROR: '{value}' is not a valid time (supported format: "
                   f"{configs['Date']['DateFormatHumanReadable']}")
-            exit(100)
+            exit(1)
     elif variable in times:
         check_time(value, configs)
     elif variable in enum_names:
@@ -73,7 +73,7 @@ def check_datatype(variable, value, ints, dates, times, enums):
         else:
             print(f"ERROR: '{value}' is not a valid value"
                   f"(allowed values: {relevant_enum['values']})")
-            exit(100)
+            exit(1)
     # treat all other variables as strings
     else:
         return value
@@ -87,7 +87,7 @@ def check_time(value, configs):
     except ValueError:
         print(f"ERROR: '{value}' is not a valid time (supported format: "
               f"{configs['Time']['TimeFormatHumanReadable']}")
-        exit(100)
+        exit(1)
 
 
 def get_relevant_enum(variable, value, enums):
