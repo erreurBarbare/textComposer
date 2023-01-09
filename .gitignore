@@ -1,7 +1,7 @@
 /shelf/
-/workspace.xml
 output/
 .idea/
 __pycache__/
 templates/
 local_setup/
+composer.ini

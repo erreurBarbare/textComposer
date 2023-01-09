@@ -62,7 +62,7 @@ def check_datatype(variable, value, ints, dates, times, enums):
             return datetime.datetime.strptime(value, configs['Date']['DateFormatMachineReadable'])
         except ValueError:
             print(f"ERROR: '{value}' is not a valid time (supported format: "
-                  f"{configs['Date']['DateFormatHumanReadable']}")
+                  f"{configs['Date']['DateFormatHumanReadable']})")
             exit(1)
     elif variable in times:
         check_time(value, configs)
@@ -86,7 +86,7 @@ def check_time(value, configs):
         return datetime.datetime.strptime(value, configs['Time']['TimeFormatMachineReadable'])
     except ValueError:
         print(f"ERROR: '{value}' is not a valid time (supported format: "
-              f"{configs['Time']['TimeFormatHumanReadable']}")
+              f"{configs['Time']['TimeFormatHumanReadable']})")
         exit(1)
 
 
