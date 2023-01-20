@@ -61,8 +61,12 @@ def check_datatype(variable, value, ints, dates, times, enums):
         try:
             return datetime.datetime.strptime(value, configs['Date']['DateFormatMachineReadable'])
         except ValueError:
-            print(f"ERROR: '{value}' is not a valid time (supported format: "
+            print(f"ERROR: '{value}' is not a valid date (supported format: "
                   f"{configs['Date']['DateFormatHumanReadable']})")
+            exit(1)
+        except TypeError:
+            print(f"ERROR: Please check your config. {type(value)} can not be used for dates. "
+                  f"Use a string of the format: {configs['Date']['DateFormatHumanReadable']}")
             exit(1)
     elif variable in times:
         check_time(value, configs)

@@ -13,6 +13,8 @@ def change_days(date, num_days):
 
 
 def format_date(value, date_format=configs['Date']['DateFormatMachineReadable']):
+    if type(value) == str:
+        value = datetime.datetime.strptime(value, configs['Date']['DateFormatMachineReadable'])
     return value.strftime(date_format)
 
 
