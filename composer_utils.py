@@ -45,7 +45,7 @@ def get_config():
     return parser
 
 
-def check_datatype(variable, value, ints, dates, times, enums):
+def check_datatype(variable, value, ints, booleans, dates, times, enums):
     configs = get_config()
     enum_names = []
     for e in enums:
@@ -56,6 +56,12 @@ def check_datatype(variable, value, ints, dates, times, enums):
             return int(value)
         except ValueError:
             print(f"ERROR: '{value}' is not a valid integer")
+            exit(1)
+    if variable in booleans:
+        if value == 'y' or value == 'n':
+            return value
+        else:
+            print(f"ERROR: {variable} allows only the values 'y' or 'n'")
             exit(1)
     elif variable in dates:
         try:
@@ -71,7 +77,7 @@ def check_datatype(variable, value, ints, dates, times, enums):
     elif variable in times:
         check_time(value, configs)
     elif variable in enum_names:
-        relevant_enum = get_relevant_enum(variable, value, enums)
+        relevant_enum = get_relevant_enum(variable, enums)
         if value in relevant_enum["values"]:
             return value
         else:
@@ -94,9 +100,8 @@ def check_time(value, configs):
         exit(1)
 
 
-def get_relevant_enum(variable, value, enums):
+def get_relevant_enum(variable, enums):
     for enum in enums:
         if enum["name"] == variable:
             return enum
     return None
-

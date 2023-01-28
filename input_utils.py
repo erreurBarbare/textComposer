@@ -31,7 +31,7 @@ def get_relevant_series_id(series_json):
             input_message = "Invalid input. Please enter a existing series name or number: "
 
 
-def get_template_vars(env, series_params, ints, dates, times, enums, optionals):
+def get_template_vars(env, series_params, ints, booleans, dates, times, enums, optionals):
     template_vars = jinja_utils.get_undeclared_vars(env)
     template_vars_dict = {}
 
@@ -39,7 +39,7 @@ def get_template_vars(env, series_params, ints, dates, times, enums, optionals):
     for v in template_vars:
         series_var = series_params.get(v)
         if series_var is not None:
-            cu.check_datatype(v, series_var, ints, dates, times, enums)
+            cu.check_datatype(v, series_var, ints, booleans, dates, times, enums)
             template_vars_dict.update({v: series_var})
         else:
             if print_info:
@@ -49,13 +49,13 @@ def get_template_vars(env, series_params, ints, dates, times, enums, optionals):
                 print("If you do NOT want to set the variable, just hit Enter")
                 print_info = False
             value = input(f"{v}: ")
-            valid_value = check_data_type(v, value, ints, dates, times, enums, optionals)
+            valid_value = check_data_type(v, value, ints, booleans, dates, times, enums, optionals)
             template_vars_dict.update({v: valid_value})
 
     return template_vars_dict
 
 
-def check_data_type(variable, value, ints, dates, times, enums, optionals):
+def check_data_type(variable, value, ints, booleans, dates, times, enums, optionals):
     enum_names = []
     for e in enums:
         enum_names.append(e["name"])
@@ -71,6 +71,11 @@ def check_data_type(variable, value, ints, dates, times, enums, optionals):
                 return int(value)
             except ValueError:
                 value = input(f"please enter a valid value for {variable} (Integer): ")
+        if variable in booleans:
+            if value == 'y' or value == 'n':
+                return value
+            else:
+                value = input(f"please enter a valid value for {variable} (y/n): ")
         elif variable in dates:
             try:
                 return datetime.datetime.strptime(value, configs['Date']['DateFormatMachineReadable'])
@@ -84,7 +89,7 @@ def check_data_type(variable, value, ints, dates, times, enums, optionals):
                 value = input(f"please enter a valid value for {variable} "
                               f"(time having the format {configs['Time']['TimeFormatHumanReadable']}): ")
         elif variable in enum_names:
-            relevant_enum = cu.get_relevant_enum(variable, value, enums)
+            relevant_enum = cu.get_relevant_enum(variable, enums)
             if value in relevant_enum["values"]:
                 return value
             else:
@@ -114,4 +119,3 @@ def calculate_discount(price):
                 except ValueError:
                     pass
         discount = input("please enter a valid value for discount: ")
-

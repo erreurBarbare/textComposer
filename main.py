@@ -39,12 +39,13 @@ def main():
 
     # define the variables values for the final text
     int_vars = cu.flatten(cu.get_attribute_of_all_objects(blocks_json, BLOCKS, "integer_vars"))
+    boolean_vars = cu.flatten(cu.get_attribute_of_all_objects(blocks_json, BLOCKS, "boolean_vars"))
     date_vars = cu.flatten(cu.get_attribute_of_all_objects(blocks_json, BLOCKS, "date_vars"))
     time_vars = cu.flatten(cu.get_attribute_of_all_objects(blocks_json, BLOCKS, "time_vars"))
     enum_vars = cu.flatten(cu.get_attribute_of_all_objects(blocks_json, BLOCKS, "enum_vars"))
     optional_vars = cu.flatten(cu.get_attribute_of_all_objects(blocks_json, BLOCKS, "optional_vars"))
     series_vars = cu.get_attribute_of_single_object(series_json, SERIES, series_id, "variables")
-    text_variables_values = input_utils.get_template_vars(env, series_vars, int_vars, date_vars, time_vars,
+    text_variables_values = input_utils.get_template_vars(env, series_vars, int_vars, boolean_vars, date_vars, time_vars,
                                                           enum_vars, optional_vars)
 
     # generate final text
