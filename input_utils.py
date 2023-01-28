@@ -11,18 +11,24 @@ configs = cu.get_config()
 def get_relevant_series_id(series_json):
     jsonpath_get_ids = parse('$.series[*].id')
     ids = [match.value for match in jsonpath_get_ids.find(series_json)]
+    counter = 1
+    series = {}
 
     print("The following series are available:")
     for i in ids:
-        print("-", i)
+        print(f"({counter}) {i}")
+        series.update({str(counter): i})
+        counter += 1
     print()
-    input_message = "-> Please enter desired series name: "
+    input_message = "-> Please enter desired series name or number: "
     while True:
         user_input = input(input_message)
-        if user_input in ids:
+        if user_input in series.keys():
+            return series.get(user_input)
+        elif user_input in ids:
             return user_input
         else:
-            input_message = "Invalid input. Please enter a existing series name: "
+            input_message = "Invalid input. Please enter a existing series name or number: "
 
 
 def get_template_vars(env, series_params, ints, dates, times, enums, optionals):
